@@ -30,6 +30,7 @@ void Shape::mousePressEvent(QGraphicsSceneMouseEvent *event) {
         setPos(startPoint);
         width = 0;
         height = 0;
+        prepareGeometryChange();
         update();
         if(scene()) {
             scene()->update();
@@ -48,8 +49,9 @@ void Shape::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (isDrawing) {
 
         QPointF currentPoint = event->scenePos();
-        width = currentPoint.x() - startPoint.x();
-        height = currentPoint.y() - startPoint.y();
+        width = qAbs(currentPoint.x() - startPoint.x());
+        height = qAbs(currentPoint.y() - startPoint.y());
+        prepareGeometryChange();
         update();
         if(scene()) {
             scene()->update();
@@ -75,6 +77,7 @@ void Shape::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
         isDrawing = false;
         isCreated=true;
         setFlag(ItemIsMovable, true);
+        prepareGeometryChange();
         update();
         if(scene()) {
             scene()->update();
@@ -100,14 +103,17 @@ void Shape::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     if (option->state & QStyle::State_Selected) {
         QPen pen(Qt::red);
         pen.setStyle(Qt::DashLine);
-        pen.setWidth(5);
+        pen.setWidth(3);
         painter->setPen(pen);
         painter->drawRect(boundingRect());
     }
 }
 
+// QRectF Shape::boundingRect() const {
+//     return QRectF(startPoint.x()-width/2, startPoint.y()-height/2, width, height);
+// }
 QRectF Shape::boundingRect() const {
-    return QRectF(startPoint.x()-width/2, startPoint.y()-height/2, width, height);
+    return QRectF(0, 0, width, height);
 }
 
 QPointF Shape::centerOfMass(const QGraphicsItem* item)

@@ -25,6 +25,7 @@ void Ellipse::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     if (option->state & QStyle::State_Selected) {
         QPen pen(Qt::red);
         pen.setStyle(Qt::DashLine);
+        pen.setWidth(3);
         QPointF com = centerOfMass(this);
         QPointF localCom = mapFromScene(com);
         painter->setPen(pen);
@@ -75,6 +76,7 @@ void Ellipse::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (isDrawing || !isCreated) {
         QPointF currentPoint = event->scenePos();
         radius = QLineF(startPoint, currentPoint).length();
+        prepareGeometryChange();
         update();
         if (scene()) {
             scene()->update();
@@ -92,6 +94,7 @@ void Ellipse::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         isDrawing = false;
         isCreated = true;
         setFlag(QGraphicsItem::ItemIsMovable, true);
+        prepareGeometryChange();
         update();
         if (scene()) {
             scene()->update();
