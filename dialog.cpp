@@ -33,8 +33,16 @@ Dialog::Dialog(QWidget *parent) : QDialog(parent) {
     panelLayout->addWidget(createRectButton);
     panelLayout->addStretch();
 
+    QHBoxLayout *rotationParametr = new QHBoxLayout(sidePanel);
     rotationButton = new QPushButton("Вращать", sidePanel);
-    panelLayout->addWidget(rotationButton);
+    rotationParametr->addWidget(rotationButton);
+    //rotationParametr->addStretch();
+
+    rotatinAngle = new QDoubleSpinBox(sidePanel);
+    rotatinAngle->setMaximum(360.0);
+    rotatinAngle->setMinimum(-360.0);
+    rotationParametr->addWidget(rotatinAngle, 1, Qt::AlignCenter);
+    panelLayout->addLayout(rotationParametr);
     panelLayout->addStretch();
 
     scaleButton = new QPushButton("Изменить масштаб", sidePanel);
@@ -49,8 +57,8 @@ Dialog::Dialog(QWidget *parent) : QDialog(parent) {
 
     connect(createEllipseButton, &QPushButton::clicked, this, &Dialog::onCreateEllipseClicked);
     connect(createRectButton, &QPushButton::clicked, this, &Dialog::onCreateRectClicked);
-   // connect(rotationButton, &QPushButton::clicked, this, &Dialog::onRotateShapeClicked);
-   // connect(scaleButton, &QPushButton::clicked, this, &Dialog::onScaleShapeClicked);
+    connect(rotationButton, &QPushButton::clicked, this, &Dialog::onRotateShapeClicked);
+   connect(scaleButton, &QPushButton::clicked, this, &Dialog::onScaleShapeClicked);
     // Перехватываем события сцены
     view->viewport()->installEventFilter(this);
 
@@ -69,7 +77,8 @@ bool Dialog::eventFilter(QObject *obj, QEvent *event)
                 if (mouseEvent->button() == Qt::LeftButton) {
                     QPointF clickPos = view->mapToScene(mouseEvent->pos());
                     if (isCreatingEllipse) {
-                        Ellipse* ellipse = new Ellipse();
+                        Shape* ellipse = new Ellipse();
+                        ellipse->currentShapeType=Shape::Ellipse;
                         ellipse->setPos(clickPos);
                         scene->addItem(ellipse);
                         //ellipse->isDrawing = true;
@@ -77,7 +86,8 @@ bool Dialog::eventFilter(QObject *obj, QEvent *event)
                         return true;
                     }
                     else if(isCreatingRect) {
-                        Rectangle* rectangle = new Rectangle();
+                        Shape* rectangle = new Rectangle();
+                        rectangle->currentShapeType=Shape::Rectangle;
                         rectangle->setPos(clickPos);
                         scene->addItem(rectangle);
                         isCreatingRect=false;
@@ -98,16 +108,47 @@ void Dialog::onCreateRectClicked()
 
 void Dialog::onRotateShapeClicked()
 {
-    if(currentShape) {
-        currentShape->rotation();
+    if (scene->selectedItems().size() == 1) {
+        QGraphicsItem *selectedItem = scene->selectedItems().first();
 
+        currentShape = dynamic_cast<Shape*>(selectedItem);
+    }
+    if(currentShape) {
+        qDebug("rotation button and object");
+        currentShape->rotation(rotatinAngle->value(), currentShape);
+        qDebug("rotation should be done and gone from func");
     }
 }
 
 void Dialog::onScaleShapeClicked()
 {
-    if(currentShape) {
-        currentShape->isDrawing=true;
+    if (scene->selectedItems().size() == 1) {
+        QGraphicsItem *selectedItem = scene->selectedItems().first();
 
+        currentShape = dynamic_cast<Shape*>(selectedItem);
+    }
+    if(currentShape) {
+        currentShape->scale=true;
     }
 }
+
+// Menu::Menu(QWidget *parent) : QWidget(parent)
+// {
+//     menu = new QMenu(this);
+
+//     draw_rect = new QAction("Rect", this);
+//     draw_circle = new QAction("Circle", this);
+
+//     connect(draw_rect, &QAction::triggered, this, &Menu::drawRectangle);
+//     connect(draw_circle, &QAction::triggered, this, &Menu::drawCircle);
+
+//     menu->addAction(draw_rect);
+//     menu->addAction(draw_circle);
+
+// }
+
+// void Menu::contextMenuEvent(QContextMenuEvent *event)
+// {
+
+//     menu->exec(event->globalPos());
+// }

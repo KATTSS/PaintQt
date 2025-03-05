@@ -5,39 +5,45 @@
 #include <QGraphicsEllipseItem>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
-
+#include <QPainter>
+#include <QKeyEvent>
+#include <cmath>
 
 class Shape : public QGraphicsItem {
 public:
+
+    enum ShapeType {
+        Rectangle, Ellipse
+    };
+    ShapeType currentShapeType;
     Shape();
 
     virtual double countPerimetr() = 0; // Периметр
     virtual double countArea() = 0;     // Площадь
-    //virtual void moveItmoveIt();    // Передвижение за мышкой
     //virtual void deformatoin();     // Изменение формы
-   // void rotation();
+    void rotation(qreal x,Shape *currentShape);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void keyPressEvent(QKeyEvent *event) override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-    virtual QRectF boundingRect() const override;
+    QRectF boundingRect() const override;
     QPointF centerOfMass(const QGraphicsItem* item);
 
-    bool Pressed;
-    // int x;
-    // int y;
+
     double width;
     double height;
     bool isDrawing=false;
     bool isCreated=false;
-    bool Rotate=false;
+    bool Pressed;
+    bool sameSides=false;
+    bool scale=false;
 
 
 protected:
-    //bool isDrawing=false;     // Флаг рисования
+
     QPointF startPoint; // Начальная точка
-    QPointF start; //начальная точка для угла при вращении
-    //QLine startLine;
+
 private:
     Shape* currentShape;
 

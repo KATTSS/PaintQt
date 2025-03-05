@@ -10,6 +10,7 @@
 
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QDoubleSpinBox>
 #include  <QObject>
 
 
@@ -44,6 +45,7 @@ private:
     QPushButton*  createRectButton;
     QPushButton* rotationButton;
     QPushButton* scaleButton;
+    QDoubleSpinBox *rotatinAngle;
     Shape *currentShape;
 
     //Ellipse* el;
