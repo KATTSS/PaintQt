@@ -31,13 +31,13 @@ void Heart::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
     path.cubicTo(
         QPointF(center.x() - width * 0.4, center.y() + height * 0.2),  // Контрольная точка 1
-        QPointF(center.x() - width * 0.1, center.y() - height * 0.3),  // Контрольная точка 2
-        QPointF(center.x(), rect.top() + height * 0.1)                 // Верхняя точка
+        QPointF(center.x() - width * 0.3, center.y() - height * 0.3),  // Контрольная точка 2
+        QPointF(center.x(), rect.top() + height * 0.3)                 // Верхняя точка
         );
 
     // Правая кривая
     path.cubicTo(
-        QPointF(center.x() + width * 0.1, center.y() - height * 0.3),  // Контрольная точка 1
+        QPointF(center.x() + width * 0.3, center.y() - height * 0.3),  // Контрольная точка 1
         QPointF(center.x() + width * 0.4, center.y() + height * 0.2),  // Контрольная точка 2
        center                                                   // Возврат в нижнюю точку
         );
