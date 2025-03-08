@@ -83,15 +83,12 @@ void Dialog::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         QPointF clickPos = event->pos() - view->pos();
-        // qInfo() << clickPos;
-        // QPointF clickPos = scene.;
+
         if (isCreatingEllipse) {
             Shape* ellipse = new Ellipse();
             ellipse->currentShapeType=Shape::Ellipse;
             ellipse->setPos(clickPos);
-            // qInfo() << ellipse->pos();
             scene->addItem(ellipse);
-            //ellipse->isDrawing = true;
             isCreatingEllipse = false;
         }
         else if(isCreatingRect) {

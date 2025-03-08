@@ -22,24 +22,21 @@ void Heart::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     QPen pen(Qt::black, 2);
     painter->setPen(pen);
 
-   // painter->translate(this->width/ 2, this->height/ 2);
-  //  painter->scale(scaleFactor, scaleFactor);
     QRectF rect = boundingRect();
-    QPointF center (centerOfMass(this).x(), boundingRect().bottom()-height*0.1);
+    QPointF center (centerOfMass(this).x(), boundingRect().top()+height*0.1);
     QPainterPath path;
     path.moveTo(center);
 
     path.cubicTo(
-        QPointF(center.x() - width * 0.4, center.y() + height * 0.2),  // Контрольная точка 1
-        QPointF(center.x() - width * 0.3, center.y() - height * 0.3),  // Контрольная точка 2
-        QPointF(center.x(), rect.top() + height * 0.3)                 // Верхняя точка
+        QPointF(center.x() - width * 0.3, center.y() - height * 0.2),
+        QPointF(center.x() - width * 0.3, center.y() + height * 0.3),
+        QPointF(center.x(), rect.bottom() - height * 0.3)
         );
 
-    // Правая кривая
     path.cubicTo(
-        QPointF(center.x() + width * 0.3, center.y() - height * 0.3),  // Контрольная точка 1
-        QPointF(center.x() + width * 0.4, center.y() + height * 0.2),  // Контрольная точка 2
-       center                                                   // Возврат в нижнюю точку
+        QPointF(center.x() + width * 0.3, center.y() + height * 0.3),
+        QPointF(center.x() + width * 0.3, center.y() - height * 0.2),
+        center
         );
 
     painter->setBrush(Qt::darkRed);

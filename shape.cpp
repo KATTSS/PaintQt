@@ -27,9 +27,8 @@ void Shape::organiseScaling(Shape *currentShape)
 
 void Shape::rotation(qreal x, Shape *currentShape)
 {
-    //qDebug("in function");
+
     setTransformOriginPoint(centerOfMass(currentShape));
-    //qDebug("center is located");
     currentShape->setRotation(x);
     updateAll();
 }
@@ -44,10 +43,6 @@ void Shape::mousePressEvent(QGraphicsSceneMouseEvent *event) {
         width = 0;
         height = 0;
     }
-    // qInfo() << event->pos().x();
-    // qInfo() << boundingRect().right();
-    qInfo() << this->pos();
-    qInfo() << this->boundingRect().topLeft();
 
     if (event->button() == Qt::LeftButton && scale && (qAbs(event->pos().x() - boundingRect().right()) < 5 || qAbs(event->pos().y() - boundingRect().bottom()) < 5 || qAbs(event->pos().x() - boundingRect().left()) < 5 || qAbs(event->pos().y() - boundingRect().height()) < 5)) {
             setFlag(QGraphicsItem::ItemIsMovable, false);

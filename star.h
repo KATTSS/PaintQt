@@ -7,7 +7,7 @@ class Star : public Shape
 
 public:
     Star(QGraphicsItem *parent = nullptr);
-    QPainterPath shape() const override;
+   // QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
     int amountVert() const { return myAmountVert; }
