@@ -33,6 +33,14 @@ Dialog::Dialog(QWidget *parent) : QDialog(parent) {
     panelLayout->addWidget(createRectButton);
     panelLayout->addStretch();
 
+    createStarButton = new QPushButton("Создать звезду", sidePanel);
+    panelLayout->addWidget(createStarButton);
+    panelLayout->addStretch();
+
+    createHeartButton = new QPushButton("Создать сердце", sidePanel);
+    panelLayout->addWidget(createHeartButton);
+    panelLayout->addStretch();
+
     QHBoxLayout *rotationParametr = new QHBoxLayout(sidePanel);
     rotationButton = new QPushButton("Вращать", sidePanel);
     rotationParametr->addWidget(rotationButton);
@@ -44,6 +52,7 @@ Dialog::Dialog(QWidget *parent) : QDialog(parent) {
     rotationParametr->addWidget(rotatinAngle, 1, Qt::AlignCenter);
     panelLayout->addLayout(rotationParametr);
     panelLayout->addStretch();
+
 
     scaleButton = new QPushButton("Изменить масштаб", sidePanel);
     panelLayout->addWidget(scaleButton);
@@ -57,46 +66,71 @@ Dialog::Dialog(QWidget *parent) : QDialog(parent) {
 
     connect(createEllipseButton, &QPushButton::clicked, this, &Dialog::onCreateEllipseClicked);
     connect(createRectButton, &QPushButton::clicked, this, &Dialog::onCreateRectClicked);
+    connect(createStarButton, &QPushButton::clicked, this, &Dialog::onCreateStarClicked);
+    connect(createHeartButton, &QPushButton::clicked, this, &Dialog::onCreateHeartClicked);
     connect(rotationButton, &QPushButton::clicked, this, &Dialog::onRotateShapeClicked);
-   connect(scaleButton, &QPushButton::clicked, this, &Dialog::onScaleShapeClicked);
+    connect(scaleButton, &QPushButton::clicked, this, &Dialog::onScaleShapeClicked);
     // Перехватываем события сцены
     view->viewport()->installEventFilter(this);
 
     setGeometry(0, 0, screenWidth, screenHeight);
-    showMaximized();
+   // showMaximized();
 }
 
 Dialog::~Dialog() {}
 
-bool Dialog::eventFilter(QObject *obj, QEvent *event)
+void Dialog::mousePressEvent(QMouseEvent *event)
 {
-
-        if (obj == view->viewport() && (isCreatingEllipse || isCreatingRect)) {
-            if (event->type() == QEvent::MouseButtonPress) {
-                QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-                if (mouseEvent->button() == Qt::LeftButton) {
-                    QPointF clickPos = view->mapToScene(mouseEvent->pos());
-                    if (isCreatingEllipse) {
-                        Shape* ellipse = new Ellipse();
-                        ellipse->currentShapeType=Shape::Ellipse;
-                        ellipse->setPos(clickPos);
-                        scene->addItem(ellipse);
-                        //ellipse->isDrawing = true;
-                        isCreatingEllipse = false;
-                        return true;
-                    }
-                    else if(isCreatingRect) {
-                        Shape* rectangle = new Rectangle();
-                        rectangle->currentShapeType=Shape::Rectangle;
-                        rectangle->setPos(clickPos);
-                        scene->addItem(rectangle);
-                        isCreatingRect=false;
-                        return true;
-                    }
-                }
-            }}
-         return QDialog::eventFilter(obj, event);
+    if (event->button() == Qt::LeftButton) {
+        QPointF clickPos = event->pos() - view->pos();
+        // qInfo() << clickPos;
+        // QPointF clickPos = scene.;
+        if (isCreatingEllipse) {
+            Shape* ellipse = new Ellipse();
+            ellipse->currentShapeType=Shape::Ellipse;
+            ellipse->setPos(clickPos);
+            // qInfo() << ellipse->pos();
+            scene->addItem(ellipse);
+            //ellipse->isDrawing = true;
+            isCreatingEllipse = false;
+        }
+        else if(isCreatingRect) {
+            Shape* rectangle = new Rectangle();
+            rectangle->currentShapeType=Shape::Rectangle;
+            rectangle->setPos(clickPos);
+            scene->addItem(rectangle);
+            isCreatingRect=false;
+        }
+        else if(isCreatingHeart) {
+            Shape* heart = new Heart();
+            heart->currentShapeType=Shape::Heart;
+            heart->setPos(clickPos);
+            scene->addItem(heart);
+            isCreatingHeart=false;
+        }
+        else if(isCreatingStar) {
+            Shape* star = new Star();
+            star->currentShapeType=Shape::Star;
+            bool ok;
+            int vertices = QInputDialog::getInt(this, tr("Create Star"),
+                                                tr("Enter number of vertices:"),
+                                                5,
+                                                3,
+                                                50,
+                                                1,
+                                                &ok);
+            Star* starr = dynamic_cast<Star*>(star);
+            if (starr) {
+                starr->setAmountVert(vertices);
+            }
+            starr->setPos(clickPos);
+            scene->addItem(starr);
+            isCreatingStar=false;
+        }
+    }
+    QWidget::mousePressEvent(event);
 }
+
 void Dialog::onCreateEllipseClicked() {
     isCreatingEllipse = true;
 }
@@ -104,6 +138,16 @@ void Dialog::onCreateEllipseClicked() {
 void Dialog::onCreateRectClicked()
 {
     isCreatingRect = true;
+}
+
+void Dialog::onCreateStarClicked()
+{
+    isCreatingStar = true;
+}
+
+void Dialog::onCreateHeartClicked()
+{
+    isCreatingHeart = true;
 }
 
 void Dialog::onRotateShapeClicked()
@@ -119,36 +163,12 @@ void Dialog::onRotateShapeClicked()
         qDebug("rotation should be done and gone from func");
     }
 }
-
-void Dialog::onScaleShapeClicked()
-{
+void Dialog::onScaleShapeClicked() {
     if (scene->selectedItems().size() == 1) {
         QGraphicsItem *selectedItem = scene->selectedItems().first();
-
         currentShape = dynamic_cast<Shape*>(selectedItem);
-    }
-    if(currentShape) {
-        currentShape->scale=true;
+        if (currentShape) {
+            currentShape->organiseScaling(currentShape);
+        }
     }
 }
-
-// Menu::Menu(QWidget *parent) : QWidget(parent)
-// {
-//     menu = new QMenu(this);
-
-//     draw_rect = new QAction("Rect", this);
-//     draw_circle = new QAction("Circle", this);
-
-//     connect(draw_rect, &QAction::triggered, this, &Menu::drawRectangle);
-//     connect(draw_circle, &QAction::triggered, this, &Menu::drawCircle);
-
-//     menu->addAction(draw_rect);
-//     menu->addAction(draw_circle);
-
-// }
-
-// void Menu::contextMenuEvent(QContextMenuEvent *event)
-// {
-
-//     menu->exec(event->globalPos());
-// }

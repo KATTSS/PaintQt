@@ -13,14 +13,14 @@ class Shape : public QGraphicsItem {
 public:
 
     enum ShapeType {
-        Rectangle, Ellipse
+        Rectangle, Ellipse, Star, Heart
     };
     ShapeType currentShapeType;
-    Shape();
+    Shape(QGraphicsItem *parent = nullptr);
 
-    virtual double countPerimetr() = 0; // Периметр
-    virtual double countArea() = 0;     // Площадь
-    //virtual void deformatoin();     // Изменение формы
+    virtual double countPerimetr() = 0;
+    virtual double countArea() = 0;
+    void organiseScaling (Shape* currentShape);
     void rotation(qreal x,Shape *currentShape);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
@@ -28,21 +28,20 @@ public:
     virtual void keyPressEvent(QKeyEvent *event) override;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QRectF boundingRect() const override;
-    QPointF centerOfMass(const QGraphicsItem* item);
-
+    QPointF centerOfMass(const QGraphicsItem* item) const;
 
     double width;
     double height;
     bool isDrawing=false;
     bool isCreated=false;
-    bool Pressed;
     bool sameSides=false;
     bool scale=false;
-
+    QPointF startPoint;
 
 protected:
+    void updateAll();
+    void scaling(qreal scalex, qreal scaley);
 
-    QPointF startPoint; // Начальная точка
 
 private:
     Shape* currentShape;

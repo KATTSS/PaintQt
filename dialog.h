@@ -12,10 +12,13 @@
 #include <QPushButton>
 #include <QDoubleSpinBox>
 #include  <QObject>
+#include <QInputDialog>
 
 
 #include <ellipse.h>
 #include <rectangle.h>
+#include <star.h>
+#include <heart.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -32,7 +35,7 @@ public:
     Dialog(QWidget *parent = nullptr);
     ~Dialog();
 protected:
-    bool eventFilter(QObject *obj, QEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
 private:
     Ui::Dialog *ui;
@@ -43,6 +46,8 @@ private:
 
     QPushButton*  createEllipseButton;
     QPushButton*  createRectButton;
+    QPushButton* createStarButton;
+    QPushButton* createHeartButton;
     QPushButton* rotationButton;
     QPushButton* scaleButton;
     QDoubleSpinBox *rotatinAngle;
@@ -50,11 +55,15 @@ private:
 
     //Ellipse* el;
     bool isCreatingEllipse = false;
-    bool isCreatingRect = true;
+    bool isCreatingRect = false;
+    bool isCreatingStar = false;
+    bool isCreatingHeart = false;
 
 private slots:
     void onCreateEllipseClicked();
     void onCreateRectClicked();
+    void onCreateStarClicked();
+    void onCreateHeartClicked();
     void onRotateShapeClicked();
     void onScaleShapeClicked();
 };

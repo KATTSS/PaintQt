@@ -53,15 +53,19 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../../ellipse.cpp \
+		../../heart.cpp \
 		../../main.cpp \
 		../../dialog.cpp \
 		../../rectangle.cpp \
-		../../shape.cpp moc_dialog.cpp
+		../../shape.cpp \
+		../../star.cpp moc_dialog.cpp
 OBJECTS       = ellipse.o \
+		heart.o \
 		main.o \
 		dialog.o \
 		rectangle.o \
 		shape.o \
+		star.o \
 		moc_dialog.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -142,12 +146,16 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../../../../LR1_Task_2.pro ../../dialog.h \
 		../../ellipse.h \
+		../../heart.h \
 		../../rectangle.h \
-		../../shape.h ../../ellipse.cpp \
+		../../shape.h \
+		../../star.h ../../ellipse.cpp \
+		../../heart.cpp \
 		../../main.cpp \
 		../../dialog.cpp \
 		../../rectangle.cpp \
-		../../shape.cpp
+		../../shape.cpp \
+		../../star.cpp
 QMAKE_TARGET  = LR1_Task_2
 DESTDIR       = 
 TARGET        = LR1_Task_2
@@ -331,8 +339,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../dialog.h ../../ellipse.h ../../rectangle.h ../../shape.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../ellipse.cpp ../../main.cpp ../../dialog.cpp ../../rectangle.cpp ../../shape.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../dialog.h ../../ellipse.h ../../heart.h ../../rectangle.h ../../shape.h ../../star.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../ellipse.cpp ../../heart.cpp ../../main.cpp ../../dialog.cpp ../../rectangle.cpp ../../shape.cpp ../../star.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../../dialog.ui $(DISTDIR)/
 
 
@@ -372,6 +380,8 @@ moc_dialog.cpp: ../../dialog.h \
 		../../ellipse.h \
 		../../shape.h \
 		../../rectangle.h \
+		../../star.h \
+		../../heart.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/katya/work/453501/ОАиП/LR1_Task_2/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-clang -I/home/katya/work/453501/ОАиП/LR1_Task_2 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/llvm-18/lib/clang/18/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../dialog.h -o moc_dialog.cpp
@@ -401,16 +411,24 @@ ellipse.o: ../../ellipse.cpp ../../ellipse.h \
 		../../shape.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ellipse.o ../../ellipse.cpp
 
+heart.o: ../../heart.cpp ../../heart.h \
+		../../shape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o heart.o ../../heart.cpp
+
 main.o: ../../main.cpp ../../dialog.h \
 		../../ellipse.h \
 		../../shape.h \
-		../../rectangle.h
+		../../rectangle.h \
+		../../star.h \
+		../../heart.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
 dialog.o: ../../dialog.cpp ../../dialog.h \
 		../../ellipse.h \
 		../../shape.h \
-		../../rectangle.h
+		../../rectangle.h \
+		../../star.h \
+		../../heart.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog.o ../../dialog.cpp
 
 rectangle.o: ../../rectangle.cpp ../../rectangle.h \
@@ -419,6 +437,10 @@ rectangle.o: ../../rectangle.cpp ../../rectangle.h \
 
 shape.o: ../../shape.cpp ../../shape.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o shape.o ../../shape.cpp
+
+star.o: ../../star.cpp ../../star.h \
+		../../shape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o star.o ../../star.cpp
 
 moc_dialog.o: moc_dialog.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialog.o moc_dialog.cpp

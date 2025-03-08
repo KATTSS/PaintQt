@@ -10,16 +10,20 @@ CONFIG += c++17
 
 SOURCES += \
     ellipse.cpp \
+    heart.cpp \
     main.cpp \
     dialog.cpp \
     rectangle.cpp \
-    shape.cpp
+    shape.cpp \
+    star.cpp
 
 HEADERS += \
     dialog.h \
     ellipse.h \
+    heart.h \
     rectangle.h \
-    shape.h
+    shape.h \
+    star.h
 
 FORMS += \
     dialog.ui
