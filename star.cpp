@@ -46,11 +46,13 @@ void Star::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 double Star::countArea()
 {
-    return 0.0;
+    qreal R = boundingRect().width()/2;
+    qreal r = R * myRadius;
+    return myAmountVert * (R*R - r*r) * qSin(M_PI/myAmountVert);
 }
 
 double Star::countPerimetr()
 {
-    return 0.0;
+     return 2*myAmountVert * boundingRect().width()/2 * qSin(M_PI/myAmountVert);
 }
 

@@ -7,6 +7,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QKeyEvent>
+#include <QMenu>
 #include <cmath>
 
 class Shape : public QGraphicsItem {

@@ -53,6 +53,18 @@ void Shape::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 
 
     }
+    if (event->button()==Qt::RightButton && isSelected()) {
+        QMenu menu;
+        QString info = QString("Центр масс: (%1, %2)\nПлощадь: %3\nПериметр: %4")
+                           .arg(centerOfMass(this).x())
+                           .arg(centerOfMass(this).y())
+                           .arg(countArea())
+                           .arg(countPerimetr());
+
+        menu.addAction(info);
+        menu.exec(event->screenPos());
+
+    }
     updateAll();
     // QGraphicsItem::mousePressEvent(event);
 }
