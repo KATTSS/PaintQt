@@ -14,7 +14,7 @@ class Shape : public QGraphicsItem {
 public:
 
     enum ShapeType {
-        Rectangle, Ellipse, Star, Heart
+        Rectangle, Ellipse, Star, Heart, Hexagon
     };
     ShapeType currentShapeType;
     Shape(QGraphicsItem *parent = nullptr);

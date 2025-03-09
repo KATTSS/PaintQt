@@ -54,6 +54,7 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../../ellipse.cpp \
 		../../heart.cpp \
+		../../hexagon.cpp \
 		../../main.cpp \
 		../../dialog.cpp \
 		../../rectangle.cpp \
@@ -61,6 +62,7 @@ SOURCES       = ../../ellipse.cpp \
 		../../star.cpp moc_dialog.cpp
 OBJECTS       = ellipse.o \
 		heart.o \
+		hexagon.o \
 		main.o \
 		dialog.o \
 		rectangle.o \
@@ -147,10 +149,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../../../../LR1_Task_2.pro ../../dialog.h \
 		../../ellipse.h \
 		../../heart.h \
+		../../hexagon.h \
 		../../rectangle.h \
 		../../shape.h \
 		../../star.h ../../ellipse.cpp \
 		../../heart.cpp \
+		../../hexagon.cpp \
 		../../main.cpp \
 		../../dialog.cpp \
 		../../rectangle.cpp \
@@ -339,8 +343,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../dialog.h ../../ellipse.h ../../heart.h ../../rectangle.h ../../shape.h ../../star.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../ellipse.cpp ../../heart.cpp ../../main.cpp ../../dialog.cpp ../../rectangle.cpp ../../shape.cpp ../../star.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../dialog.h ../../ellipse.h ../../heart.h ../../hexagon.h ../../rectangle.h ../../shape.h ../../star.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../ellipse.cpp ../../heart.cpp ../../hexagon.cpp ../../main.cpp ../../dialog.cpp ../../rectangle.cpp ../../shape.cpp ../../star.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../../dialog.ui $(DISTDIR)/
 
 
@@ -381,6 +385,7 @@ moc_dialog.cpp: ../../dialog.h \
 		../../shape.h \
 		../../rectangle.h \
 		../../star.h \
+		../../hexagon.h \
 		../../heart.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -415,11 +420,17 @@ heart.o: ../../heart.cpp ../../heart.h \
 		../../shape.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o heart.o ../../heart.cpp
 
+hexagon.o: ../../hexagon.cpp ../../hexagon.h \
+		../../star.h \
+		../../shape.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o hexagon.o ../../hexagon.cpp
+
 main.o: ../../main.cpp ../../dialog.h \
 		../../ellipse.h \
 		../../shape.h \
 		../../rectangle.h \
 		../../star.h \
+		../../hexagon.h \
 		../../heart.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
@@ -428,6 +439,7 @@ dialog.o: ../../dialog.cpp ../../dialog.h \
 		../../shape.h \
 		../../rectangle.h \
 		../../star.h \
+		../../hexagon.h \
 		../../heart.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog.o ../../dialog.cpp
 

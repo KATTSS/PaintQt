@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     ellipse.cpp \
     heart.cpp \
+    hexagon.cpp \
     main.cpp \
     dialog.cpp \
     rectangle.cpp \
@@ -21,6 +22,7 @@ HEADERS += \
     dialog.h \
     ellipse.h \
     heart.h \
+    hexagon.h \
     rectangle.h \
     shape.h \
     star.h

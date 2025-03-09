@@ -37,6 +37,10 @@ Dialog::Dialog(QWidget *parent) : QDialog(parent) {
     panelLayout->addWidget(createStarButton);
     panelLayout->addStretch();
 
+    createHexButton = new QPushButton("Создать многоугольник", sidePanel);
+    panelLayout->addWidget(createHexButton);
+    panelLayout->addStretch();
+
     createHeartButton = new QPushButton("Создать сердце", sidePanel);
     panelLayout->addWidget(createHeartButton);
     panelLayout->addStretch();
@@ -67,6 +71,7 @@ Dialog::Dialog(QWidget *parent) : QDialog(parent) {
     connect(createEllipseButton, &QPushButton::clicked, this, &Dialog::onCreateEllipseClicked);
     connect(createRectButton, &QPushButton::clicked, this, &Dialog::onCreateRectClicked);
     connect(createStarButton, &QPushButton::clicked, this, &Dialog::onCreateStarClicked);
+    connect(createHexButton, &QPushButton::clicked, this, &Dialog::onCreateHexClicked);
     connect(createHeartButton, &QPushButton::clicked, this, &Dialog::onCreateHeartClicked);
     connect(rotationButton, &QPushButton::clicked, this, &Dialog::onRotateShapeClicked);
     connect(scaleButton, &QPushButton::clicked, this, &Dialog::onScaleShapeClicked);
@@ -124,6 +129,25 @@ void Dialog::mousePressEvent(QMouseEvent *event)
             scene->addItem(starr);
             isCreatingStar=false;
         }
+        else if(isCreatingHex) {
+            Shape* hex = new Hexagon();
+            hex->currentShapeType=Shape::Hexagon;
+            bool ok;
+            int vertices = QInputDialog::getInt(this, tr("Create Hexagon"),
+                                                tr("Enter number of vertices:"),
+                                                5,
+                                                3,
+                                                70,
+                                                1,
+                                                &ok);
+            Hexagon* hexi = dynamic_cast<Hexagon*>(hex);
+            if (hexi) {
+                hexi->setAmountVert(vertices);
+            }
+            hexi->setPos(clickPos);
+            scene->addItem(hexi);
+            isCreatingHex=false;
+        }
     }
     QWidget::mousePressEvent(event);
 }
@@ -140,6 +164,11 @@ void Dialog::onCreateRectClicked()
 void Dialog::onCreateStarClicked()
 {
     isCreatingStar = true;
+}
+
+void Dialog::onCreateHexClicked()
+{
+    isCreatingHex = true;
 }
 
 void Dialog::onCreateHeartClicked()

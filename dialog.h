@@ -18,6 +18,7 @@
 #include <ellipse.h>
 #include <rectangle.h>
 #include <star.h>
+#include <hexagon.h>
 #include <heart.h>
 
 
@@ -48,6 +49,7 @@ private:
     QPushButton*  createRectButton;
     QPushButton* createStarButton;
     QPushButton* createHeartButton;
+    QPushButton* createHexButton;
     QPushButton* rotationButton;
     QPushButton* scaleButton;
     QDoubleSpinBox *rotatinAngle;
@@ -57,12 +59,14 @@ private:
     bool isCreatingEllipse = false;
     bool isCreatingRect = false;
     bool isCreatingStar = false;
+    bool isCreatingHex = false;
     bool isCreatingHeart = false;
 
 private slots:
     void onCreateEllipseClicked();
     void onCreateRectClicked();
     void onCreateStarClicked();
+    void onCreateHexClicked();
     void onCreateHeartClicked();
     void onRotateShapeClicked();
     void onScaleShapeClicked();
